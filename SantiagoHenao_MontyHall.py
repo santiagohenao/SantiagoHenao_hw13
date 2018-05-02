@@ -13,26 +13,34 @@ except ValueError:
 
 silent="-s" in sys.argv
 
+N=4
+
+base=list(range(N))
+
 def init():
     '''
     Function that initializes monty hall problem simulation.
 
     returns a list with randomly ordered door's content.
     '''
-    return np.random.permutation(["goat","goat","car"])
+    l=[]
+    for i in range(N-1):
+        l.append("goat")
+    l.append("car")
+    return np.random.permutation(l)
 
 def first_choice():
     '''
     Emulates the initial choice.
     '''
-    return np.random.choice([0,1,2])
+    return np.random.choice(base)
 
 def reveal_goat(doors_list,initial_choice):
     '''
     In answer to the initial choice, the machine reveals a door (index of) where is a goat, randomly.
     '''
     possible_indexes=[]
-    for i in [0,1,2]:
+    for i in base:
         if( i!=initial_choice and doors_list[i]=="goat" ):
             # It is not fair to reveal the first goat. Here are considered all scenarios.
             possible_indexes.append(i)
@@ -44,11 +52,11 @@ def second_choice(change,initial_choice,goat_index):
     Emulates the second choice, according to the rules of the game.
     '''
     if(change):
-        choice=-1;
-        for i in [0,1,2]:
+        choices=[]
+        for i in base:
             if( i!=goat_index and i!=initial_choice ):
-                choice=i
-        return choice
+                choices.append(i)
+        return np.random.choice(choices)
     else:
         return initial_choice
 
